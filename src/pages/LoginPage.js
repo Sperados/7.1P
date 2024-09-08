@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, signInWithEmailAndPassword } from '../firebase';
-import './LoginPage.css';
+import './LoginPage.css';  // Retain your original CSS
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');  // Track login error
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log("Login button clicked");  // Debugging
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log("User logged in:", userCredential);  // Debugging
         navigate('/');
       })
       .catch((error) => {
-        console.error("Login failed", error);
+        setError('Login failed. Please check your credentials.');
       });
   };
 
   return (
     <div className="login-container">
       <h2>Login</h2>
+      {error && <p className="error-message">{error}</p>} {/* Error Message */}
       <form onSubmit={handleLogin}>
         <input
           type="email"
